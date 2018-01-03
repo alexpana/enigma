@@ -1,0 +1,5 @@
+[package]
+
+name = "ctags-server"
+version = "0.0.1"
+authors = ["Alexandru Pana <alexandru.pana@manabreakstudios.com"]
