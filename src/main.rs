@@ -17,6 +17,11 @@ fn main() {
         if line.starts_with("!_") {
             continue;
         }
+
+        let tagaddress_start = line.find("/^").expect("Could not parse tag file");
+        let tagaddress_end = line.find("$/;\"").expect("Could not parse tag file") + 4;
+
+        println!("tagaddress: {}", &line[tagaddress_start..tagaddress_end]);
         
         let tag_definition: Vec<&str> = line.split("\t").collect();
 
