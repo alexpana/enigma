@@ -1,5 +1,8 @@
 [package]
 
-name = "ctags-server"
+name = "enigma"
 version = "0.0.1"
 authors = ["Alexandru Pana <alexandru.pana@manabreakstudios.com"]
+
+[dependencies]
+scaproust = "0.3.1"
