@@ -8,10 +8,10 @@ pub struct Server<'a> {
 
 pub trait ServerCommand {
     fn command_name(&self) -> String;
-    fn execute(&self, command: &String) -> String;
+    fn execute(&self, command: &str) -> String;
 }
 
-impl <'a> Server<'a> {
+impl<'a> Server<'a> {
     pub fn new() -> Server<'a> {
         Server {
             commands: Vec::new()
@@ -30,7 +30,6 @@ impl <'a> Server<'a> {
         for stream in listener.incoming() {
             let stream = stream.unwrap();
 
-            println!("Connection established!");
             self.handle_connection(stream);
         }
     }
@@ -39,11 +38,15 @@ impl <'a> Server<'a> {
         let mut buffer = [0; 512];
         stream.read(&mut buffer).unwrap();
 
-        let message = String::from_utf8(Vec::from(&buffer[..])).unwrap();
-
+        let request_raw_string = String::from_utf8(Vec::from(&buffer[..])).unwrap();
+        let request = request_raw_string.lines().nth(0).unwrap();
+        println!("Received request: \"{}\"", request);
         for command in &self.commands {
-            if message.starts_with(&command.command_name()) {
-                stream.write(command.execute(&message).as_bytes()).unwrap();
+            if request.starts_with(&command.command_name()) {
+                let reply = command.execute(&request);
+
+                println!("Sending reply: \"{}\"", reply);
+                stream.write(reply.as_bytes()).unwrap();
             }
         }
         stream.flush().unwrap();

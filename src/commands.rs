@@ -9,11 +9,11 @@ impl ServerCommand for EchoCommand {
         return String::from("echo");
     }
 
-    fn execute(&self, command: &String) -> String {
+    fn execute(&self, command: &str) -> String {
         let arg_separator = command.find(" ");
         let args = match arg_separator {
             None => "",
-            Some(v) => &command.as_str()[v + 1..]
+            Some(v) => &command[v + 1..]
         };
         return String::from(args);
     }
@@ -28,7 +28,7 @@ impl<'a> ServerCommand for DescribeTag<'a> {
         String::from("describe")
     }
 
-    fn execute(&self, command: &String) -> String {
+    fn execute(&self, command: &str) -> String {
         let tokens: Vec<&str> = command.lines().nth(0).unwrap().split(" ").collect();
 
         let tag_name = tokens[1].trim();
