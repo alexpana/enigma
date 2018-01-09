@@ -1,9 +1,13 @@
 mod tags;
 mod server;
+mod commands;
 
 use tags::TagDatabase;
 use tags::TagFile;
 use server::Server;
+
+use commands::EchoCommand;
+use commands::DescribeTag;
 
 use std::time::Instant;
 
@@ -18,7 +22,10 @@ fn main() {
     let elapsed = now.elapsed();
     println!("Finished parsing {} tags file in {:.3}s", tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
 
-    let mut server = Server {};
+    let mut server = Server::new();
 
-    server.bind("localhost", 9092);
+    server.add_command(Box::new(EchoCommand {}));
+    server.add_command(Box::new(DescribeTag { tag_database: &tags }));
+
+    server.bind("127.0.0.1", 9092);
 }

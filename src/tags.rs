@@ -3,7 +3,7 @@ use std::io::BufRead;
 use std::io::BufReader;
 
 #[derive(Debug, PartialOrd, PartialEq)]
-enum TagKind {
+pub enum TagKind {
     MacroDefinitions,
     EnumValue,
     FunctionDefinition,
@@ -55,18 +55,18 @@ fn tag_kind_from_char(tag_kind: char) -> TagKind {
 }
 
 #[derive(Debug)]
-struct TagLocation<'a> {
+pub struct TagLocation<'a> {
     file_path: &'a str,
     line: usize,
 }
 
 #[derive(Debug)]
-struct TagDefinition<'a> {
-    name: &'a str,
-    declaration: &'a str,
-    location: TagLocation<'a>,
-    kind: TagKind,
-    fields: Vec<&'a str>,
+pub struct TagDefinition<'a> {
+    pub name: &'a str,
+    pub declaration: &'a str,
+    pub location: TagLocation<'a>,
+    pub kind: TagKind,
+    pub fields: Vec<&'a str>,
 }
 
 pub struct TagFile {
@@ -99,7 +99,7 @@ impl TagFile {
 }
 
 pub struct TagDatabase<'a> {
-    tags: Vec<TagDefinition<'a>>,
+    pub tags: Vec<TagDefinition<'a>>,
 }
 
 impl<'a> TagDatabase<'a> {
