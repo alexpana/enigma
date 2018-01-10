@@ -14,7 +14,7 @@ use std::time::Instant;
 
 fn main() {
     let now = Instant::now();
-    let tag_file = TagFile::from_file("D:/Unreal/UE_4.17/Engine/Source/Runtime/tags");
+    let tag_file = TagFile::from_file("test/tags_ue_4.17");
 
     let mut tags = TagDatabase::new();
     tags.parse_file(&tag_file);
