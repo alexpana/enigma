@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
+use std::path::Path;
 
 #[derive(Debug, PartialOrd, PartialEq)]
 pub enum TagKind {
@@ -60,6 +61,15 @@ pub struct TagLocation<'a> {
     line: usize,
 }
 
+impl<'a> TagLocation<'a> {
+    pub fn new(file_path: &'a str, line: usize) -> TagLocation<'a> {
+        TagLocation {
+            file_path,
+            line,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct TagDefinition<'a> {
     pub name: &'a str,
@@ -67,6 +77,23 @@ pub struct TagDefinition<'a> {
     pub location: TagLocation<'a>,
     pub kind: TagKind,
     pub fields: Vec<&'a str>,
+}
+
+impl<'a> TagDefinition<'a> {
+    pub fn new_file(file_path: &str) -> TagDefinition {
+        let path = Path::new(file_path);
+
+        TagDefinition {
+            name: path.file_name().unwrap().to_str().unwrap(),
+            declaration: "",
+            location: TagLocation {
+                file_path,
+                line: 1,
+            },
+            kind: TagKind::File,
+            fields: Vec::new(),
+        }
+    }
 }
 
 pub struct TagFile {
@@ -109,7 +136,7 @@ impl<'a> TagDatabase<'a> {
         }
     }
 
-    pub fn parse_file<'b:'a> (self: &mut TagDatabase<'a>, tag_file: &'b TagFile) {
+    pub fn parse_file<'b: 'a>(self: &mut TagDatabase<'a>, tag_file: &'b TagFile) {
         for line in &tag_file.lines {
             if !line.starts_with("!_") {
                 let tag_definition = parse_tag_definition(line);

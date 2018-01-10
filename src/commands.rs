@@ -1,6 +1,8 @@
 use server::*;
 
 use tags::TagDatabase;
+use tags::TagDefinition;
+use tags::TagLocation;
 use std::path::Path;
 
 pub struct EchoCommand;
@@ -45,7 +47,7 @@ impl<'a> ServerCommand for DescribeTag<'a> {
 }
 
 pub struct FindOtherFileCommand<'a> {
-    pub tag_database: &'a FindOtherFileCommand<'a>
+    pub tag_database: &'a TagDatabase<'a>
 }
 
 impl<'a> ServerCommand for FindOtherFileCommand<'a> {
@@ -58,6 +60,8 @@ impl<'a> ServerCommand for FindOtherFileCommand<'a> {
 
         let file_path = tokens[1].trim();
         let arg_path = Path::new(file_path);
+
+        String::from("")
 //
 //        for tag in &self.tag_database.tags {
 //            if tag.name.starts_with(tag_name) {
@@ -76,34 +80,14 @@ mod tests {
 
     #[test]
     fn test_find_other_file() {
-        let header_file_tag = TagDefinition {
-            name: "Test.h",
-            declaration: "",
-            location: TagLocation {
-                file_path: "/tmp/Test.h",
-                line: 1,
-            },
-            kind: TagKind::File,
-            fields: Vec::new(),
-        };
-
-        let implementation_file_tag = TagDefinition {
-            name: "Test.cpp",
-            declaration: "",
-            location: TagLocation {
-                file_path: "/tmp/Test.cpp",
-                line: 1,
-            },
-            kind: TagKind::File,
-            fields: Vec::new(),
-        };
-
         let tag_database = TagDatabase {
-            tags: vec!(header_file_tag, implementation_file_tag)
+            tags: vec!(TagDefinition::new_file("/tmp/Test.h"),
+                       TagDefinition::new_file("/tmp/Test.cpp"))
         };
 
         let command = FindOtherFileCommand {
             tag_database: &tag_database
         };
+
     }
 }
