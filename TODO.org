@@ -1,7 +1,7 @@
 # TODO
 
 ## Misc / Internals
-  * [ ] Split commands into submodules
+  * [x] Split commands into submodules
 
 ## Commands
   * [x] Implement find-other-file command
