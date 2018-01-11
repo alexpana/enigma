@@ -57,8 +57,8 @@ fn tag_kind_from_char(tag_kind: char) -> TagKind {
 
 #[derive(Debug)]
 pub struct TagLocation<'a> {
-    file_path: &'a str,
-    line: usize,
+    pub file_path: &'a str,
+    pub line: usize,
 }
 
 impl<'a> TagLocation<'a> {
