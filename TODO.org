@@ -1,0 +1,9 @@
+# TODO
+
+## Misc / Internals
+  * [ ] Split commands into submodules
+
+## Commands
+  * [x] Implement find-other-file command
+  * [ ] Implement load-tags-file command
+  * [ ] Implement reload-tags-file command

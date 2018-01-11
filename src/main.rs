@@ -1,6 +1,7 @@
 mod tags;
 mod server;
 mod commands;
+mod search;
 
 use tags::TagDatabase;
 use tags::TagFile;

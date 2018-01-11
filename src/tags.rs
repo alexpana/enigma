@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
@@ -97,6 +98,7 @@ impl<'a> TagDefinition<'a> {
 }
 
 pub struct TagFile {
+    file_path: String,
     lines: Vec<String>,
 }
 
@@ -120,29 +122,34 @@ impl TagFile {
         }
 
         TagFile {
-            lines
+            file_path: String::from(input_file_path),
+            lines,
         }
     }
 }
 
 pub struct TagDatabase<'a> {
-    pub tags: Vec<TagDefinition<'a>>,
+    pub tags: HashMap<String, Vec<TagDefinition<'a>>>,
 }
 
 impl<'a> TagDatabase<'a> {
     pub fn new() -> TagDatabase<'a> {
         TagDatabase {
-            tags: Vec::new(),
+            tags: HashMap::new(),
         }
     }
 
     pub fn parse_file<'b: 'a>(self: &mut TagDatabase<'a>, tag_file: &'b TagFile) {
+        let mut tags = Vec::new();
+
         for line in &tag_file.lines {
             if !line.starts_with("!_") {
                 let tag_definition = parse_tag_definition(line);
-                self.tags.push(tag_definition);
+                tags.push(tag_definition);
             }
         }
+
+        self.tags.insert(String::from(tag_file.file_path.as_str()), tags);
     }
 
     pub fn len(self: &TagDatabase<'a>) -> usize {

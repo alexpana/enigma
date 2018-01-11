@@ -37,7 +37,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_match_abbrev_pass() {
+    fn match_abbrev_should_pass() {
         assert_eq!(true, match_abbrev("ProjectileSpawnLocation", "ProjSpLoc"));
         assert_eq!(true, match_abbrev("ProjectileSpawnLocation", "PSL"));
         assert_eq!(true, match_abbrev("ProjectileSpawnLocation", "ProjS"));
@@ -48,7 +48,7 @@ mod tests {
     }
 
     #[test]
-    fn test_match_abbrev_fail() {
+    fn match_abbrev_should_fail() {
         assert_eq!(false, match_abbrev("ProjectileSpawnLocation", "ProjSpLc"));
         assert_eq!(false, match_abbrev("ProjectileSpawnLocation", "PSLC"));
     }

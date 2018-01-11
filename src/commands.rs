@@ -1,8 +1,6 @@
 use server::*;
 
 use tags::TagDatabase;
-use tags::TagDefinition;
-use tags::TagLocation;
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -37,7 +35,7 @@ impl<'a> ServerCommand for DescribeTag<'a> {
 
         let tag_name = tokens[1].trim();
 
-        for tag in &self.tag_database.tags {
+        for tag in self.tag_database.tags.values().flat_map(|v| v) {
             if tag.name.starts_with(tag_name) {
                 return format!("{:?}", tag);
             }
@@ -104,7 +102,7 @@ impl<'a> ServerCommand for FindOtherFileCommand<'a> {
         let file_name = arg_path.file_stem().unwrap().to_str().unwrap();
         let other_file_extensions = self.extensions.get(file_extension).unwrap();
 
-        for tag in &self.tag_database.tags {
+        for tag in self.tag_database.tags.values().flat_map(|v| v) {
             if FindOtherFileCommand::match_other_file(tag.name, file_name, other_file_extensions) {
                 return format!("{}", tag.location.file_path);
             }
@@ -117,13 +115,16 @@ impl<'a> ServerCommand for FindOtherFileCommand<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use tags::TagKind;
+    use tags::*;
 
     #[test]
-    fn different_paths() {
+    fn should_find_other_file_in_different_paths() {
+        let mut tag_map = HashMap::new();
+        tag_map.insert(String::from("tags"), vec!(TagDefinition::new_file("/classes/Test.h"),
+                                    TagDefinition::new_file("/private/Test.cpp")));
+
         let tag_database = TagDatabase {
-            tags: vec!(TagDefinition::new_file("/classes/Test.h"),
-                       TagDefinition::new_file("/private/Test.cpp"))
+            tags: tag_map,
         };
 
         let command = FindOtherFileCommand::new(&tag_database);
@@ -133,13 +134,16 @@ mod tests {
     }
 
     #[test]
-    fn multiple_tags() {
+    fn should_find_other_file_in_multiple_tags() {
+        let mut tag_map = HashMap::new();
+        tag_map.insert(String::from("tags"), vec!(TagDefinition::new_file("/1/2/Test.h"),
+                                    TagDefinition::new_file("/a/b/TestA.h"),
+                                    TagDefinition::new_file("/x/y/Test.cpp"),
+                                    TagDefinition::new_file("/ma/sogetsu/TestA.cpp"),
+        ));
+
         let tag_database = TagDatabase {
-            tags: vec!(TagDefinition::new_file("/1/2/Test.h"),
-                       TagDefinition::new_file("/a/b/TestA.h"),
-                       TagDefinition::new_file("/x/y/Test.cpp"),
-                       TagDefinition::new_file("/ma/sogetsu/TestA.cpp"),
-            )
+            tags: tag_map
         };
 
         let command = FindOtherFileCommand::new(&tag_database);
