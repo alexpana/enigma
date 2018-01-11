@@ -66,7 +66,21 @@ impl<'a> FindOtherFileCommand<'a> {
     }
 
     pub fn match_other_file(other_file_name: &str, file_stem: &str, extensions: &Vec<&str>) -> bool {
-        return false;
+        let path = Path::new(other_file_name);
+
+        let file_extension_opt = path.extension();
+        let extension_matches = match file_extension_opt {
+            None => false,
+            Some(v) => extensions.contains(&v.to_str().unwrap()),
+        };
+
+        let file_stem_opt = path.file_stem();
+        let stem_matches = match file_stem_opt {
+            None => false,
+            Some(v) => v == file_stem,
+        };
+
+        return stem_matches && extension_matches;
     }
 }
 
@@ -106,15 +120,31 @@ mod tests {
     use tags::TagKind;
 
     #[test]
-    fn test_find_other_file() {
+    fn different_paths() {
         let tag_database = TagDatabase {
-            tags: vec!(TagDefinition::new_file("/tmp/Test.h"),
-                       TagDefinition::new_file("/tmp/Test.cpp"))
+            tags: vec!(TagDefinition::new_file("/classes/Test.h"),
+                       TagDefinition::new_file("/private/Test.cpp"))
         };
 
         let command = FindOtherFileCommand::new(&tag_database);
 
-        assert_eq!("/tmp/Test.cpp", command.execute("find-other-file Test.h"));
-        assert_eq!("/tmp/Test.h", command.execute("find-other-file Test.cpp"));
+        assert_eq!("/private/Test.cpp", command.execute("find-other-file Test.h"));
+        assert_eq!("/classes/Test.h", command.execute("find-other-file Test.cpp"));
+    }
+
+    #[test]
+    fn multiple_tags() {
+        let tag_database = TagDatabase {
+            tags: vec!(TagDefinition::new_file("/1/2/Test.h"),
+                       TagDefinition::new_file("/a/b/TestA.h"),
+                       TagDefinition::new_file("/x/y/Test.cpp"),
+                       TagDefinition::new_file("/ma/sogetsu/TestA.cpp"),
+            )
+        };
+
+        let command = FindOtherFileCommand::new(&tag_database);
+
+        assert_eq!("/ma/sogetsu/TestA.cpp", command.execute("find-other-file TestA.h"));
+        assert_eq!("/1/2/Test.h", command.execute("find-other-file /x/y/Test.cpp"));
     }
 }
