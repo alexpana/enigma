@@ -1,8 +1,10 @@
 [package]
 
 name = "enigma"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Alexandru Pana <alexandru.pana@manabreakstudios.com"]
 
 [dependencies]
 yaml-rust = "0.4"
+log = "0.4"
+simplelog = "^0.4.4"

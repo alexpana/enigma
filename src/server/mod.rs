@@ -65,7 +65,7 @@ impl <'a> Server<'a> {
     pub fn bind(&mut self, hostname: &str, port: usize) {
         let listener = TcpListener::bind(format!("{}:{}", hostname, port)).unwrap();
 
-        println!("Listening for TCP connections on {}:{}", hostname, port);
+        info!("Listening for TCP connections on {}:{}", hostname, port);
 
         for stream in listener.incoming() {
             let stream = stream.unwrap();
@@ -78,7 +78,7 @@ impl <'a> Server<'a> {
         let command_index = self.command_index;
         self.command_index += 1;
         
-        println!("Executing command [{}]: \"{}\"", command_index, request);
+        info!("Executing command [{}]: \"{}\"", command_index, request);
         let mut handled = false;
         let mut result = String::new();
         
@@ -95,7 +95,7 @@ impl <'a> Server<'a> {
             result = "Unrecognized command".to_string();
         }
 
-        println!("Command result [{}]: \"{}\"", command_index, result);
+        info!("Command result [{}]: \"{}\"", command_index, result);
         result
     }
 

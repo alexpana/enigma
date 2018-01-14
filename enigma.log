@@ -1,0 +1,5 @@
+13:46:32 [INFO] Running enigma 0.0.2
+13:46:32 [INFO] Executing command [0]: "load-tags-file d:/Unreal/UE_4.17/Engine/Source/Runtime/Tags"
+13:46:33 [INFO] Finished parsing 359717 tags file in 0.424s
+13:46:33 [INFO] Command result [0]: "Done"
+13:46:33 [INFO] Listening for TCP connections on 127.0.0.1:9092

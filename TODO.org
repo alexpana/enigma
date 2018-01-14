@@ -1,10 +1,10 @@
 * Enigma
 
 ** Tasks
-*** Generic [2/3]
+*** Generic [3/4]
   * [X] Split commands into submodules
 	* [X] Initialize server from yaml file
-	* [ ] Add proper logging
+	* [X] Add proper logging
 	* [ ] Implement simple TCP client
 
 *** Commands [2/3]

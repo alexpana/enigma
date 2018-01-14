@@ -32,7 +32,7 @@ impl TagFile {
         for (num, line) in reader.lines().enumerate() {
             match line {
                 Err(e) => {
-                    println!("Error reading line {}: {}", num, e);
+                    warn!("Error reading line {}: {}", num, e);
                 }
                 Ok(v) => {
                     if !v.starts_with("!_") {
@@ -42,7 +42,7 @@ impl TagFile {
             }
         }        
         let elapsed = now.elapsed();
-        println!("Finished parsing {} tags file in {:.3}s", result.tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
+        info!("Finished parsing {} tags file in {:.3}s", result.tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
         result
     }
 }
