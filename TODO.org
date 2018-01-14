@@ -1,9 +1,11 @@
-# TODO
+* Enigma
 
-## Misc / Internals
-  * [x] Split commands into submodules
-
-## Commands
-  * [x] Implement find-other-file command
-  * [ ] Implement load-tags-file command
+** Tasks
+*** Generic [0/0]
+  * [X] Split commands into submodules
+	* [ ] Initialize server from yaml file
+	* [ ] Add proper logging
+*** Commands [0/0]
+  * [X] Implement find-other-file command
+  * [X] Implement load-tags-file command
   * [ ] Implement reload-tags-file command

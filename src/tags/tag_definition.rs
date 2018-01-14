@@ -60,7 +60,7 @@ impl TagDefinition {
 
     pub fn from_string(tag_definition: String) -> TagDefinition {
         let mut cursor = 0;
-        let mut token_end = 0;
+        let mut token_end;
 
         // name
         token_end = tag_definition.find("\t").unwrap();
@@ -70,7 +70,6 @@ impl TagDefinition {
         // file
         token_end = tag_definition[cursor..].find("\t").unwrap() + cursor;
         let location_file_path = (cursor, token_end);
-        cursor = token_end + 1;
 
         // declaration
         let (declaration, mut cursor) = parse_declaration(&tag_definition[..]);

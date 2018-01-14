@@ -1,6 +1,12 @@
 pub mod tag_definition;
 pub mod tag_file;
 
+// use self::tag_definition::TagDefinition;
+
+#[allow(dead_code)]
+pub type TagDefinition = self::tag_definition::TagDefinition;
+pub type TagFile = self::tag_file::TagFile;
+
 #[derive(Debug, PartialOrd, PartialEq, Clone)]
 #[allow(dead_code)]
 pub enum TagKind {
@@ -54,4 +60,14 @@ pub fn tag_kind_from_char(tag_kind: char) -> TagKind {
     }
 }
 
-pub type TagDefinition = tag_definition::TagDefinition;
+pub struct TagDatabase {
+    pub tag_files: Vec<TagFile>
+}
+
+impl TagDatabase {
+    pub fn new() -> TagDatabase {
+        TagDatabase {
+            tag_files: Vec::new(),
+        }
+    }
+}

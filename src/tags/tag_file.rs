@@ -1,28 +1,34 @@
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
-use std::path::Path;
 use std::time::Instant;
 
 use tags::tag_definition::TagDefinition;
 
+#[allow(dead_code)]
 pub struct TagFile {
     file_path: String,
-    tags: Vec<TagDefinition>
+    pub tags: Vec<TagDefinition>
 }
 
 impl TagFile {
+    #[allow(dead_code)]
+    pub fn new() -> TagFile {
+        TagFile {
+            file_path: "".to_string(),
+            tags: Vec::new(),
+        }
+    }
+
     pub fn from_file(input_file_path: &str) -> TagFile {
         let mut result = TagFile {
             file_path: String::from(input_file_path),
             tags: Vec::new(),
         };
 
-        let now = Instant::now();
         let f = File::open(input_file_path).unwrap();
         let reader = BufReader::new(&f);
-
+        let now = Instant::now();
         for (num, line) in reader.lines().enumerate() {
             match line {
                 Err(e) => {
@@ -34,10 +40,9 @@ impl TagFile {
                     }
                 }
             }
-        }
-
+        }        
         let elapsed = now.elapsed();
-        println!("# Finished parsing {} tags file in {:.3}s", result.tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
+        println!("Finished parsing {} tags file in {:.3}s", result.tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
         result
     }
 }
@@ -49,8 +54,5 @@ mod tests {
     
     #[test]
     fn should_parse_simple_file() {
-        let tag_file = TagFile::from_file("D:/Unreal/UE_4.17/Engine/Source/Runtime/tags");
-        thread::sleep(time::Duration::from_millis(100000));
-        assert_eq!(true, false);
     }
 }

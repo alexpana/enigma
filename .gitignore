@@ -1,0 +1,5 @@
+.idea/
+Cargo.lock
+enigma.yaml
+target/
+test/tags
