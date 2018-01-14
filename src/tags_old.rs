@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::path::Path;
+use std::time::Instant;
 
 #[derive(Debug, PartialOrd, PartialEq)]
 pub enum TagKind {
@@ -73,11 +74,11 @@ impl<'a> TagLocation<'a> {
 
 #[derive(Debug)]
 pub struct TagDefinition<'a> {
-    pub name: &'a str,
-    pub declaration: &'a str,
-    pub location: TagLocation<'a>,
+    pub name: (usize, usize),
+    pub declaration: (usize, usize),
+    pub location: ((usize, usize), usize),
     pub kind: TagKind,
-    pub fields: Vec<&'a str>,
+    pub fields: Vec<(usize, usize)>,
 }
 
 impl<'a> TagDefinition<'a> {
@@ -97,63 +98,61 @@ impl<'a> TagDefinition<'a> {
     }
 }
 
-pub struct TagFile {
+pub struct TagFile<'a> {
     file_path: String,
     lines: Vec<String>,
+    tags: Vec<TagDefinition<'a>>
 }
 
-impl TagFile {
-    pub fn from_file(input_file_path: &str) -> TagFile {
-        let mut lines = Vec::new();
-        {
-            let f = File::open(input_file_path).unwrap();
-            let reader = BufReader::new(&f);
+impl <'a> TagFile<'a> {
+    pub fn from_file(input_file_path: &str) -> TagFile<'a> {
+        let mut result = TagFile {
+            file_path: String::from(input_file_path),
+            lines: Vec::new(),
+            tags: Vec::new(),
+        };
 
-            for (num, line) in reader.lines().enumerate() {
-                match line {
-                    Err(e) => {
-                        println!("Error reading line {}: {}", num, e);
-                    }
-                    Ok(v) => {
-                        lines.push(v);
-                    }
+        let f = File::open(input_file_path).unwrap();
+        let reader = BufReader::new(&f);
+
+        for (num, line) in reader.lines().enumerate() {
+            match line {
+                Err(e) => {
+                    println!("Error reading line {}: {}", num, e);
+                }
+                Ok(v) => {
+                    result.lines.push(v);
                 }
             }
         }
-
-        TagFile {
-            file_path: String::from(input_file_path),
-            lines,
-        }
+        result
     }
+
+    fn load_tags(&mut self) {
+        let now = Instant::now();
+
+        for line in &self.lines {
+            if !line.starts_with("!_") {
+                let tag_definition = parse_tag_definition(&line);
+                self.tags.push(tag_definition);
+            }
+        }
+
+        let elapsed = now.elapsed();
+        println!("# Finished parsing {} tags file in {:.3}s", self.tags.len(), elapsed.as_secs() as f64 + elapsed.subsec_nanos() as f64 / 1e9_f64);
+    }
+
 }
 
 pub struct TagDatabase<'a> {
-    pub tags: HashMap<String, Vec<TagDefinition<'a>>>,
+    pub tag_files: Vec<TagFile<'a>>,
 }
 
 impl<'a> TagDatabase<'a> {
     pub fn new() -> TagDatabase<'a> {
         TagDatabase {
-            tags: HashMap::new(),
+            tag_files: Vec::new(),
         }
-    }
-
-    pub fn parse_file<'b: 'a>(self: &mut TagDatabase<'a>, tag_file: &'b TagFile) {
-        let mut tags = Vec::new();
-
-        for line in &tag_file.lines {
-            if !line.starts_with("!_") {
-                let tag_definition = parse_tag_definition(line);
-                tags.push(tag_definition);
-            }
-        }
-
-        self.tags.insert(String::from(tag_file.file_path.as_str()), tags);
-    }
-
-    pub fn len(self: &TagDatabase<'a>) -> usize {
-        return self.tags.len();
     }
 }
 

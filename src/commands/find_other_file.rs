@@ -5,14 +5,12 @@ use std::collections::HashMap;
 use std::path::Path;
 
 pub struct FindOtherFileCommand<'a> {
-    pub tag_database: &'a TagDatabase<'a>,
     extensions: HashMap<&'a str, Vec<&'a str>>,
 }
 
 impl<'a> FindOtherFileCommand<'a> {
-    pub fn new(tag_database: &'a TagDatabase) -> FindOtherFileCommand<'a> {
+    pub fn new() -> FindOtherFileCommand<'a> {
         FindOtherFileCommand {
-            tag_database,
             extensions: [
                 ("cpp", vec!["h", "hpp"]),
                 ("c", vec!["h", "hpp"]),
@@ -46,7 +44,7 @@ impl<'a> ServerCommand for FindOtherFileCommand<'a> {
         String::from("find-other-file")
     }
 
-    fn execute(&self, command: &str) -> String {
+    fn execute(&self, command: &str, tag_database: &mut TagDatabase) -> String {
         let tokens: Vec<&str> = command.lines().nth(0).unwrap().split(" ").collect();
 
         let file_path = tokens[1].trim();
@@ -61,7 +59,7 @@ impl<'a> ServerCommand for FindOtherFileCommand<'a> {
         let file_name = arg_path.file_stem().unwrap().to_str().unwrap();
         let other_file_extensions = self.extensions.get(file_extension).unwrap();
 
-        for tag in self.tag_database.tags.values().flat_map(|v| v) {
+        for tag in tag_database.tags.values().flat_map(|v| v) {
             if FindOtherFileCommand::match_other_file(tag.name, file_name, other_file_extensions) {
                 return format!("{}", tag.location.file_path);
             }

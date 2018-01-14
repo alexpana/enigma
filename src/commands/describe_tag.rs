@@ -1,21 +1,20 @@
 use tags::TagDatabase;
 use server::ServerCommand;
 
-pub struct DescribeTag<'a> {
-    pub tag_database: &'a TagDatabase<'a>
+pub struct DescribeTag {
 }
 
-impl<'a> ServerCommand for DescribeTag<'a> {
+impl ServerCommand for DescribeTag {
     fn command_name(&self) -> String {
         String::from("describe")
     }
 
-    fn execute(&self, command: &str) -> String {
+    fn execute(&self, command: &str, tag_database: &mut TagDatabase) -> String {
         let tokens: Vec<&str> = command.lines().nth(0).unwrap().split(" ").collect();
 
         let tag_name = tokens[1].trim();
 
-        for tag in self.tag_database.tags.values().flat_map(|v| v) {
+        for tag in tag_database.tags.values().flat_map(|v| v) {
             if tag.name.starts_with(tag_name) {
                 return format!("{:?}", tag);
             }

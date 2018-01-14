@@ -1,19 +1,22 @@
 use std::io::prelude::*;
 use std::net::TcpListener;
 use std::net::TcpStream;
+use tags::TagDatabase;
 
 pub struct Server<'a> {
     commands: Vec<Box<ServerCommand + 'a>>,
+    tag_database: &'a mut TagDatabase<'a>
 }
 
 pub trait ServerCommand {
     fn command_name(&self) -> String;
-    fn execute(&self, command: &str) -> String;
+    fn execute(&self, command: &str, tag_database: &mut TagDatabase) -> String;
 }
 
 impl<'a> Server<'a> {
-    pub fn new() -> Server<'a> {
+    pub fn new(tag_database: &'a mut TagDatabase<'a>) -> Server<'a> {
         Server {
+            tag_database,
             commands: Vec::new()
         }
     }
@@ -43,7 +46,7 @@ impl<'a> Server<'a> {
         println!("Received request: \"{}\"", request);
         for command in &self.commands {
             if request.starts_with(&command.command_name()) {
-                let reply = command.execute(&request);
+                let reply = command.execute(&request, &mut self.tag_database);
 
                 println!("Sending reply: \"{}\"", reply);
                 stream.write(reply.as_bytes()).unwrap();
