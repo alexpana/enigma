@@ -1,11 +1,13 @@
 * Enigma
 
 ** Tasks
-*** Generic [0/0]
+*** Generic [2/3]
   * [X] Split commands into submodules
-	* [ ] Initialize server from yaml file
+	* [X] Initialize server from yaml file
 	* [ ] Add proper logging
-*** Commands [0/0]
+	* [ ] Implement simple TCP client
+
+*** Commands [2/3]
   * [X] Implement find-other-file command
   * [X] Implement load-tags-file command
   * [ ] Implement reload-tags-file command
