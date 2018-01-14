@@ -95,8 +95,6 @@ impl TagDefinition {
             }
         };
 
-        println!("{:?}", fields);
-
         TagDefinition {
             original_line: tag_definition,
             name,
