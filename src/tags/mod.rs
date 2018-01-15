@@ -1,8 +1,6 @@
 pub mod tag_definition;
 pub mod tag_file;
 
-// use self::tag_definition::TagDefinition;
-
 #[allow(dead_code)]
 pub type TagDefinition = self::tag_definition::TagDefinition;
 pub type TagFile = self::tag_file::TagFile;
@@ -60,6 +58,32 @@ pub fn tag_kind_from_char(tag_kind: char) -> TagKind {
     }
 }
 
+pub fn tag_kind_from_str(tag_kind: &str) -> TagKind {
+    match &tag_kind.to_lowercase()[..] {
+        "macro" => TagKind::MacroDefinitions,
+        "enum_value" => TagKind::EnumValue,
+        "function" => TagKind::FunctionDefinition,
+        "enum" => TagKind::Enum,
+        "header_include" => TagKind::HeaderInclude,
+        "local_variable" => TagKind::LocalVariable,
+        "member" => TagKind::ClassMember,
+        "function_prototype" => TagKind::FunctionPrototype,
+        "struct" => TagKind::Struct,
+        "typedef" => TagKind::Typedef,
+        "union" => TagKind::Union,
+        "variable" => TagKind::Variable,
+        "forward_declaration" => TagKind::ForwardDeclaration,
+        "function_parameter" => TagKind::FunctionParameter,
+        "goto_label" => TagKind::GotoLabel,
+        "class" => TagKind::Class,
+        "namespace" => TagKind::Namespace,
+        "namespace_alias" => TagKind::NamespaceAlias,
+        "namespace_using_statement" => TagKind::NamespaceUsingStatement,
+        "file" => TagKind::File,
+        _ => TagKind::Unknown
+    }
+}
+
 pub struct TagDatabase {
     pub tag_files: Vec<TagFile>
 }
@@ -69,5 +93,9 @@ impl TagDatabase {
         TagDatabase {
             tag_files: Vec::new(),
         }
+    }
+
+    pub fn all_tags<'a>(&'a self) -> Box<Iterator<Item = &'a TagDefinition> + 'a> {
+        Box::new(self.tag_files.iter().map(|v| &v.tags).flat_map(|v| v))
     }
 }

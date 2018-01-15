@@ -11,7 +11,7 @@ use self::yaml_rust::{YamlLoader};
 
 use tags::TagDatabase;
 
-use self::commands::{Echo, FindOtherFile, LoadTagsFile};
+use self::commands::*;
 
 pub struct Server<'a> {
     commands: Vec<Box<ServerCommand + 'a>>,
@@ -49,6 +49,7 @@ impl <'a> Server<'a> {
         server.add_command(Box::new(Echo::new()));
         server.add_command(Box::new(FindOtherFile::new()));
         server.add_command(Box::new(LoadTagsFile::new()));
+        server.add_command(Box::new(DescribeTagCommand::new()));
 
         // commands
         for command in doc["commands"].as_vec().unwrap() {

@@ -26,7 +26,7 @@ pub fn match_abbrev(value: &str, query: &str) -> bool {
             Some(v) => {
                 index = index + v;
             }
-        }
+        }X
     }
 
     return true;

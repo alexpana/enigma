@@ -103,6 +103,11 @@ impl TagDefinition {
             fields,
         }
     }
+
+    pub fn to_elisp(&self) -> String {
+        format!("(tag :name \"{}\" :source \"{}\" line: {} :kind '{:?}))", self.name(),
+                self.source_file(), self.source_line(), self.kind())
+    }
 }
 
 fn parse_declaration(line: &str) -> ((usize, usize), usize) {

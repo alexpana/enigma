@@ -1,5 +1,23 @@
-13:46:32 [INFO] Running enigma 0.0.2
-13:46:32 [INFO] Executing command [0]: "load-tags-file d:/Unreal/UE_4.17/Engine/Source/Runtime/Tags"
-13:46:33 [INFO] Finished parsing 359717 tags file in 0.424s
-13:46:33 [INFO] Command result [0]: "Done"
-13:46:33 [INFO] Listening for TCP connections on 127.0.0.1:9092
+13:57:10 [INFO] Running enigma 0.0.2
+13:57:10 [INFO] Executing command [0]: "load-tags-file d:/Unreal/UE_4.17/Engine/Source/Runtime/Tags"
+13:57:10 [INFO] Finished parsing 359717 tags file in 0.421s
+13:57:10 [INFO] Command result [0]: "Done"
+13:57:10 [INFO] Listening for TCP connections on 127.0.0.1:9092
+13:57:14 [INFO] Executing command [1]: "describe -k file Actor.h"
+13:57:14 [INFO] Command result [1]: "(tag :name "Actor.h" :source "D:/Unreal/UE_4.17/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" line: 1 :kind 'File))"
+13:57:18 [INFO] Executing command [2]: "describe -k file Actor"
+13:57:18 [INFO] Command result [2]: ""
+13:57:21 [INFO] Executing command [3]: "describe -k class Actor"
+13:57:21 [INFO] Command result [3]: ""
+13:57:28 [INFO] Executing command [4]: "describe -k type Actor"
+13:57:28 [INFO] Command result [4]: ""
+13:57:44 [INFO] Executing command [5]: "describe -k class AActor"
+13:57:44 [INFO] Command result [5]: "(tag :name "AActor" :source "D:/Unreal/UE_4.17/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" line: 80 :kind 'Class))"
+13:58:01 [INFO] Executing command [6]: "describe -k clas AActor"
+13:58:01 [INFO] Command result [6]: ""
+14:58:32 [INFO] Executing command [7]: "describe -k class Actor"
+14:58:32 [INFO] Command result [7]: ""
+14:58:34 [INFO] Executing command [8]: "describe -k class AActor"
+14:58:34 [INFO] Command result [8]: "(tag :name "AActor" :source "D:/Unreal/UE_4.17/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" line: 80 :kind 'Class))"
+14:58:46 [INFO] Executing command [9]: "describe -k class AActor"
+14:58:46 [INFO] Command result [9]: "(tag :name "AActor" :source "D:/Unreal/UE_4.17/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" line: 80 :kind 'Class))"

@@ -1,13 +1,19 @@
 * Enigma
 
 ** Tasks
-*** Generic [3/4]
+*** Generic [4/4]
   * [X] Split commands into submodules
 	* [X] Initialize server from yaml file
 	* [X] Add proper logging
-	* [ ] Implement simple TCP client
+	* [X] Implement simple TCP client
+  * [x] [x] Add support for parsing arguments
+	* [ ] Add support for watching tag files and regenerating tags
+
+*** Emacs [0/1]
+  * [ ] Implement simple TCP client (or just use netcat?)
 
 *** Commands [2/3]
   * [X] Implement find-other-file command
   * [X] Implement load-tags-file command
   * [ ] Implement reload-tags-file command
+	* [ ] Implement find-tags command
