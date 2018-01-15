@@ -28,7 +28,7 @@ impl DescribeTagCommand {
             }
         }
         
-        "".to_string()
+        "nil".to_string()
     }
 
     fn usage_help(&self) -> String {

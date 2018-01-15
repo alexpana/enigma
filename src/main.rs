@@ -4,6 +4,7 @@ extern crate simplelog;
 extern crate getopts;
 
 mod tags;
+mod search;
 mod server;
 
 

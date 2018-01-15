@@ -49,7 +49,8 @@ impl <'a> Server<'a> {
         server.add_command(Box::new(Echo::new()));
         server.add_command(Box::new(FindOtherFile::new()));
         server.add_command(Box::new(LoadTagsFile::new()));
-        server.add_command(Box::new(DescribeTagCommand::new()));
+        server.add_command(Box::new(DescribeTag::new()));
+        server.add_command(Box::new(FindTags::new()));
 
         // commands
         for command in doc["commands"].as_vec().unwrap() {
