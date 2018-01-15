@@ -6,7 +6,7 @@
 	* [X] Initialize server from yaml file
 	* [X] Add proper logging
 	* [X] Implement simple TCP client
-  * [x] [x] Add support for parsing arguments
+  * [X] Add support for parsing arguments
 	* [ ] Add support for watching tag files and regenerating tags
 
 *** Emacs [0/1]
